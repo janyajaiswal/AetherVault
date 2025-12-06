@@ -1,4 +1,3 @@
-````
 # AetherVault — NFT Auction & Marketplace DApp
 
 AetherVault is a decentralized NFT auction marketplace built on Ethereum.
@@ -23,17 +22,20 @@ It enables users to:
 ## ✨ Features
 
 ### NFT Management
+
 - Mint new NFTs with metadata stored on IPFS
 - View and manage owned NFTs
 - Transfer ownership
 - Real-time transaction updates through MetaMask
 
 ### Marketplace
+
 - Browse all NFTs listed for sale
 - Buy NFTs instantly at fixed prices
 - View detailed NFT metadata, ownership history, and pricing
 
 ### Auction System
+
 - Start timed auctions for NFTs
 - Participate in real-time bidding
 - Automatic winner selection
@@ -41,6 +43,7 @@ It enables users to:
 - Reclaim NFTs from unsold auctions
 
 ### User Experience
+
 - MetaMask wallet integration
 - Smooth blockchain interaction using ethers.js
 - NFT storage using Pinata (IPFS)
@@ -51,6 +54,7 @@ It enables users to:
 ## 🧱 Tech Stack
 
 ### Blockchain & Smart Contracts
+
 - Solidity
 - OpenZeppelin ERC721
 - Truffle
@@ -59,6 +63,7 @@ It enables users to:
 - Pinata IPFS for file storage
 
 ### Frontend
+
 - React 19 + Vite
 - ethers.js
 - Tailwind CSS
@@ -70,10 +75,11 @@ It enables users to:
 ## 🚀 Getting Started
 
 ### 1. Clone the Repository
+
 ```bash
 git clone https://github.com/example/AetherVault.git
 cd AetherVault
-````
+```
 
 ### 2. Install Root Dependencies
 

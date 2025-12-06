@@ -194,13 +194,12 @@ const Auctions = () => {
                 metadata = await response.json();
                 console.log(`Metadata for ${tokenId}:`, metadata);
 
-                // Handle IPFS image paths
-                if (metadata.image && metadata.image.startsWith('ipfs://')) {
-                  metadata.image = `https://ipfs.io/ipfs/${metadata.image.split('ipfs://').pop()}`;
-                } else if (metadata.image && metadata.image.includes('/ipfs/')) {
-                  // metadata.image = `https://ipfs.io/ipfs/${metadata.image.split('/ipfs/').pop()}`;
-                  imageUrl = `https://gateway.pinata.cloud/ipfs/${imageUrl.split('/ipfs/').pop()}`;
-                }
+              // Handle IPFS image paths
+              if (metadata.image && metadata.image.startsWith('ipfs://')) {
+                metadata.image = `https://ipfs.io/ipfs/${metadata.image.split('ipfs://').pop()}`;
+              } else if (metadata.image && metadata.image.includes('/ipfs/')) {
+                metadata.image = `https://gateway.pinata.cloud/ipfs/${metadata.image.split('/ipfs/').pop()}`;
+              }
               } else {
                 console.warn(`Failed to fetch metadata for token ${tokenId}: ${response.statusText}`);
               }

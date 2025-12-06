@@ -36,7 +36,10 @@ const Auctions = () => {
         setUserAddress(address);
 
         // Connect to NFT contract
-        const nftContractAddress = NFTAuction.networks["5777"].address;
+        const nftContractAddress = NFTAuction.networks["5777"]?.address;
+        if (!nftContractAddress) {
+          throw new Error('NFT contract not deployed on Ganache network (5777). Please ensure contracts are deployed.');
+        }
         const nftContractInstance = new ethers.Contract(
           nftContractAddress,
           NFTAuction.abi,
@@ -45,7 +48,10 @@ const Auctions = () => {
         setNFTContract(nftContractInstance);
 
         // Connect to Auction contract
-        const auctionContractAddress = Auction.networks["5777"].address;
+        const auctionContractAddress = Auction.networks["5777"]?.address;
+        if (!auctionContractAddress) {
+          throw new Error('Auction contract not deployed on Ganache network (5777). Please ensure contracts are deployed.');
+        }
         const auctionContractInstance = new ethers.Contract(
           auctionContractAddress,
           Auction.abi,
@@ -433,7 +439,9 @@ const Auctions = () => {
       // setPastAuctions(validAuctions);
     } catch (err) {
       console.error("Error loading completed auctions:", err);
-      setError("Failed to load completed auctions. Please try again later.");
+      console.error("Error message:", err.message);
+      console.error("Error stack:", err.stack);
+      setError(`Failed to load completed auctions: ${err.message}`);
     }
   };
 
@@ -517,20 +525,44 @@ const Auctions = () => {
 
     setLoading(true);
     setError(null);
-    setIsAuctionCreator(false); // Reset this state before each bid attempt
+    setIsAuctionCreator(false);
 
     try {
       const bidAmountWei = ethers.parseEther(bidAmount.toString());
       console.log(`Placing bid of ${bidAmount} ETH on auction ${auctionId}`);
 
-      // Auction creator cannot bid on their own auction
-      const auctionDetails = await auctionContract.getAuctionDetails(auctionId);
-      const auctionCreator = auctionDetails.seller;
+      // Get current user address
       const userAddr = await signer.getAddress();
+      console.log(`User address: ${userAddr}`);
 
-      if (userAddr.toLowerCase() === auctionCreator.toLowerCase()) {
+      // Get auction details for validation
+      const auctionDetails = await auctionContract.getAuctionDetails(auctionId);
+      console.log(`Auction details:`, {
+        seller: auctionDetails.seller,
+        currentPrice: ethers.formatEther(auctionDetails.price),
+        biddable: auctionDetails.biddable,
+        live: auctionDetails.live,
+        sold: auctionDetails.sold
+      });
+
+      // Check if auction is live
+      if (!auctionDetails.live) {
+        setError("Auction is not active");
+        setLoading(false);
+        return;
+      }
+
+      // Check if user is seller
+      if (userAddr.toLowerCase() === auctionDetails.seller.toLowerCase()) {
         alert("You cannot bid on your own auction");
         setIsAuctionCreator(true);
+        setLoading(false);
+        return;
+      }
+
+      // Check if bid is higher than current price
+      if (bidAmountWei <= auctionDetails.price) {
+        setError(`Bid must be higher than current price: ${ethers.formatEther(auctionDetails.price)} ETH`);
         setLoading(false);
         return;
       }
@@ -540,15 +572,26 @@ const Auctions = () => {
       await tx.wait();
       console.log("✅ Bid placed successfully");
 
-      // Show success message
       setNotification('Bid placed successfully!');
       setTimeout(() => setNotification(''), 5000);
 
-      // Refresh auction data
       await fetchActiveAuctions(auctionContract, nftContract);
     } catch (error) {
       console.error("Error placing bid:", error);
-      setError(`Failed to place bid: ${error.reason || error.message}`);
+      console.error("Error code:", error.code);
+      console.error("Error reason:", error.reason);
+      let errorMsg = `Failed to place bid: ${error.reason || error.message}`;
+      
+      // Try to decode common errors
+      if (error.message && error.message.includes("!biddable")) {
+        errorMsg = "Bidding is not allowed for this auction";
+      } else if (error.message && error.message.includes("!live")) {
+        errorMsg = "This auction is not live";
+      } else if (error.message && error.message.includes("has ended")) {
+        errorMsg = "This auction has ended";
+      }
+      
+      setError(errorMsg);
     } finally {
       setLoading(false);
     }

@@ -5,6 +5,35 @@
   font-family: 'Arial', sans-serif;
 }
 
+.mint-header-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.mint-header-actions h1 {
+  margin: 0;
+}
+
+.bulk-mint-toggle-btn {
+  padding: 10px 20px;
+  background: linear-gradient(135deg, #00d4ff, #0099ff);
+  color: #000;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3);
+}
+
+.bulk-mint-toggle-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 212, 255, 0.4);
+}
+
 .mint-section {
   display: flex;
   justify-content: center;

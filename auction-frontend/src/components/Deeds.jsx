@@ -1,5 +1,6 @@
 import React from 'react'
 import MintButton from './MintButton'
+import BulkMint from './BulkMint'
 import './styles/Deeds.css'
 import { useState, useEffect } from 'react';
 import { ethers } from 'ethers';
@@ -23,6 +24,7 @@ const Deeds = () => {
   const [status, setStatus] = useState('')
   const [fileURL, setFileURL] = useState(null)
   const [deedsStatus, setDeedsStatus] = useState('No deeds yet')
+  const [showBulkMint, setShowBulkMint] = useState(false)
 
 
   async function OnChangeFile(e) {
@@ -227,8 +229,23 @@ const Deeds = () => {
 
   return (
     <>
+      {showBulkMint && (
+        <BulkMint onClose={() => {
+          setShowBulkMint(false)
+          fetchAllNFTs()
+        }} />
+      )}
+      
       <div className='auction-container'>
-        <h1>Mint a Deed</h1>
+        <div className="mint-header-actions">
+          <h1>Mint a Deed</h1>
+          <button
+            className="bulk-mint-toggle-btn"
+            onClick={() => setShowBulkMint(true)}
+          >
+            Bulk Mint
+          </button>
+        </div>
         <h2>{status}</h2>
 
         <div className="mint-section">

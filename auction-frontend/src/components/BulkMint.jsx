@@ -144,14 +144,25 @@ const BulkMint = ({ onClose }) => {
       await provider.send('eth_requestAccounts', [])
 
       // Get contract
+      const contractAddress = NFTAuction.networks[5777]?.address
+      if (!contractAddress) {
+        throw new Error('Contract not deployed on Ganache network (5777). Please ensure Ganache is running with network ID 5777.')
+      }
+
       const contract = new ethers.Contract(
-        NFTAuction.networks[5777].address,
+        contractAddress,
         NFTAuction.abi,
         signer
       )
 
-      // Get listing price
-      const listingPrice = await contract.getListPrice()
+      // Get listing price with error handling
+      let listingPrice
+      try {
+        listingPrice = await contract.getListPrice()
+      } catch (error) {
+        console.error('Error getting listing price:', error)
+        throw new Error('Could not get listing price from contract. Ensure contract is deployed correctly.')
+      }
 
       // Mint each NFT
       const results = []
@@ -329,7 +340,7 @@ const BulkMint = ({ onClose }) => {
             onClick={handleBulkMint}
             disabled={nfts.length === 0 || minting}
           >
-            {minting ? `Minting... (${progress.current}/${progress.total})` : `Bulk Mint All (${nfts.length})`}
+            <span>{minting ? `Minting... (${progress.current}/${progress.total})` : `Bulk Mint All (${nfts.length})`}</span>
           </button>
         </div>
       </div>

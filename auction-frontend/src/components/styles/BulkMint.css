@@ -7,6 +7,8 @@
   justify-content: center;
   z-index: 1000;
   backdrop-filter: blur(4px);
+  overflow-y: auto;
+  padding: 20px;
 }
 
 .bulk-mint-container {
@@ -15,9 +17,10 @@
   border-radius: 12px;
   box-shadow: 0 8px 32px rgba(100, 200, 255, 0.15);
   max-width: 800px;
-  width: 90%;
-  max-height: 90vh;
-  overflow-y: auto;
+  width: 100%;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
   color: #e0e0e0;
 }
 
@@ -27,9 +30,8 @@
   align-items: center;
   padding: 24px;
   border-bottom: 1px solid rgba(100, 200, 255, 0.2);
-  position: sticky;
-  top: 0;
   background: rgba(26, 26, 46, 0.95);
+  flex-shrink: 0;
 }
 
 .bulk-mint-header h2 {
@@ -61,6 +63,10 @@
 
 .bulk-mint-content {
   padding: 24px;
+  overflow-y: auto;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 .instructions {
@@ -126,6 +132,8 @@
   flex-direction: column;
   gap: 16px;
   margin-bottom: 20px;
+  flex: 1;
+  overflow-y: auto;
 }
 
 .nft-form {
@@ -307,6 +315,7 @@
   justify-content: center;
   gap: 8px;
   margin-bottom: 16px;
+  flex-shrink: 0;
 }
 
 .add-nft-btn:hover {
@@ -321,21 +330,76 @@
 }
 
 .mint-btn {
+  position: relative;
   width: 100%;
-  padding: 12px;
+  padding: 14px;
   background: linear-gradient(135deg, #64c8ff, #00ffff);
   color: #0a0e27;
   border: none;
-  border-radius: 6px;
-  font-weight: 600;
-  font-size: 14px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 15px;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  flex-shrink: 0;
+  box-shadow: 0 8px 25px rgba(100, 200, 255, 0.3),
+    0 0 0 0 rgba(100, 200, 255, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  overflow: hidden;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.mint-btn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, #00ffff, #64c8ff);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.mint-btn::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.4),
+    transparent
+  );
+  transition: left 0.5s ease;
+}
+
+.mint-btn span {
+  position: relative;
+  z-index: 1;
 }
 
 .mint-btn:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(100, 200, 255, 0.4);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 35px rgba(100, 200, 255, 0.4),
+    0 0 0 6px rgba(100, 200, 255, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+.mint-btn:hover:not(:disabled)::before {
+  opacity: 1;
+}
+
+.mint-btn:hover:not(:disabled)::after {
+  left: 100%;
+}
+
+.mint-btn:active:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 5px 15px rgba(100, 200, 255, 0.3),
+    0 0 0 3px rgba(100, 200, 255, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
 .mint-btn:disabled {

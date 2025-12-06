@@ -1,0 +1,23 @@
+.popup-message {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: transparent; /* Transparent background */
+    color: #fff;
+    padding: 30px 50px;
+    font-size: 40px;
+    font-weight: bold;
+    text-align: center;
+    z-index: 1000;
+    text-shadow: 0 0 10px rgba(255,255,255,0.8), 0 0 20px rgba(255,255,255,0.5);
+    animation: popup-show 0.5s ease, popup-hide 0.5s ease 4.5s forwards;
+  }
+   @keyframes popup-show {
+    from { transform: translate(-50%, -60%); opacity: 0; }
+    to { transform: translate(-50%, -50%); opacity: 1; }
+  }
+   @keyframes popup-hide {
+    to { transform: translate(-50%, -60%); opacity: 0; }
+  }
+ 

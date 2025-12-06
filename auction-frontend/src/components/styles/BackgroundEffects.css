@@ -1,0 +1,294 @@
+.background-effects {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* Animated grid pattern */
+.animated-grid {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    linear-gradient(rgba(139, 92, 246, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(139, 92, 246, 0.1) 1px, transparent 1px);
+  background-size: 50px 50px;
+  animation: grid-move 20s linear infinite;
+  opacity: 0.3;
+}
+
+@keyframes grid-move {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(50px, 50px);
+  }
+}
+
+/* Floating orbs */
+.floating-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(40px);
+  animation: float 15s ease-in-out infinite;
+}
+
+.orb-1 {
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(139, 92, 246, 0.4), transparent);
+  top: 10%;
+  left: 5%;
+  animation-delay: 0s;
+}
+
+.orb-2 {
+  width: 250px;
+  height: 250px;
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.4), transparent);
+  top: 60%;
+  right: 10%;
+  animation-delay: 2s;
+}
+
+.orb-3 {
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle, rgba(236, 72, 153, 0.3), transparent);
+  bottom: 20%;
+  left: 20%;
+  animation-delay: 4s;
+}
+
+.orb-4 {
+  width: 350px;
+  height: 350px;
+  background: radial-gradient(circle, rgba(168, 85, 247, 0.3), transparent);
+  top: 30%;
+  right: 30%;
+  animation-delay: 1s;
+}
+
+.orb-5 {
+  width: 180px;
+  height: 180px;
+  background: radial-gradient(circle, rgba(34, 211, 238, 0.3), transparent);
+  bottom: 10%;
+  right: 5%;
+  animation-delay: 3s;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+    opacity: 0.6;
+  }
+  25% {
+    transform: translate(30px, -30px) scale(1.1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: translate(-20px, 20px) scale(0.9);
+    opacity: 0.7;
+  }
+  75% {
+    transform: translate(20px, 30px) scale(1.05);
+    opacity: 0.75;
+  }
+}
+
+/* Geometric shapes */
+.geometric-shape {
+  position: absolute;
+  border: 2px solid;
+  opacity: 0.2;
+  animation: rotate 20s linear infinite;
+}
+
+.shape-1 {
+  width: 150px;
+  height: 150px;
+  border-color: rgba(139, 92, 246, 0.5);
+  top: 15%;
+  right: 15%;
+  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+  animation-delay: 0s;
+}
+
+.shape-2 {
+  width: 100px;
+  height: 100px;
+  border-color: rgba(59, 130, 246, 0.5);
+  bottom: 25%;
+  left: 10%;
+  transform: rotate(45deg);
+  animation-delay: 5s;
+}
+
+.shape-3 {
+  width: 120px;
+  height: 120px;
+  border-color: rgba(236, 72, 153, 0.5);
+  top: 50%;
+  left: 50%;
+  border-radius: 50%;
+  animation-delay: 10s;
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Glowing lines */
+.glow-line {
+  position: absolute;
+  background: linear-gradient(90deg, transparent, currentColor, transparent);
+  opacity: 0.15;
+  animation: line-sweep 8s ease-in-out infinite;
+}
+
+.line-1 {
+  width: 2px;
+  height: 100%;
+  color: rgba(139, 92, 246, 0.8);
+  left: 20%;
+  animation-delay: 0s;
+  box-shadow: 0 0 20px rgba(139, 92, 246, 0.5);
+}
+
+.line-2 {
+  width: 2px;
+  height: 100%;
+  color: rgba(59, 130, 246, 0.8);
+  right: 30%;
+  animation-delay: 2s;
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+}
+
+.line-3 {
+  width: 100%;
+  height: 2px;
+  color: rgba(236, 72, 153, 0.8);
+  top: 40%;
+  animation-delay: 4s;
+  box-shadow: 0 0 20px rgba(236, 72, 153, 0.5);
+}
+
+@keyframes line-sweep {
+  0%, 100% {
+    opacity: 0.1;
+  }
+  50% {
+    opacity: 0.3;
+  }
+}
+
+/* Particles */
+.particles {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+}
+
+.particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: rgba(139, 92, 246, 0.6);
+  border-radius: 50%;
+  box-shadow: 0 0 10px rgba(139, 92, 246, 0.8);
+  animation: particle-float 10s ease-in-out infinite;
+}
+
+.particle-1 { top: 10%; left: 15%; animation-delay: 0s; }
+.particle-2 { top: 20%; left: 80%; animation-delay: 0.5s; }
+.particle-3 { top: 30%; left: 25%; animation-delay: 1s; }
+.particle-4 { top: 40%; left: 70%; animation-delay: 1.5s; }
+.particle-5 { top: 50%; left: 10%; animation-delay: 2s; }
+.particle-6 { top: 60%; left: 90%; animation-delay: 2.5s; }
+.particle-7 { top: 70%; left: 35%; animation-delay: 3s; }
+.particle-8 { top: 80%; left: 60%; animation-delay: 3.5s; }
+.particle-9 { top: 15%; left: 50%; animation-delay: 4s; }
+.particle-10 { top: 25%; left: 30%; animation-delay: 4.5s; }
+.particle-11 { top: 35%; left: 75%; animation-delay: 5s; }
+.particle-12 { top: 45%; left: 20%; animation-delay: 5.5s; }
+.particle-13 { top: 55%; left: 85%; animation-delay: 6s; }
+.particle-14 { top: 65%; left: 40%; animation-delay: 6.5s; }
+.particle-15 { top: 75%; left: 65%; animation-delay: 7s; }
+.particle-16 { top: 85%; left: 15%; animation-delay: 7.5s; }
+.particle-17 { top: 5%; left: 45%; animation-delay: 8s; }
+.particle-18 { top: 90%; left: 55%; animation-delay: 8.5s; }
+.particle-19 { top: 12%; left: 65%; animation-delay: 9s; }
+.particle-20 { top: 95%; left: 25%; animation-delay: 9.5s; }
+
+@keyframes particle-float {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+    opacity: 0.4;
+  }
+  50% {
+    transform: translate(20px, -30px) scale(1.2);
+    opacity: 0.8;
+  }
+}
+
+/* Corner accents */
+.corner-accent {
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  border: 2px solid;
+  opacity: 0.15;
+}
+
+.top-left {
+  top: 0;
+  left: 0;
+  border-right: none;
+  border-bottom: none;
+  border-color: rgba(139, 92, 246, 0.6);
+  clip-path: polygon(0 0, 100% 0, 0 100%);
+}
+
+.top-right {
+  top: 0;
+  right: 0;
+  border-left: none;
+  border-bottom: none;
+  border-color: rgba(59, 130, 246, 0.6);
+  clip-path: polygon(0 0, 100% 0, 100% 100%);
+}
+
+.bottom-left {
+  bottom: 0;
+  left: 0;
+  border-right: none;
+  border-top: none;
+  border-color: rgba(236, 72, 153, 0.6);
+  clip-path: polygon(0 0, 0 100%, 100% 100%);
+}
+
+.bottom-right {
+  bottom: 0;
+  right: 0;
+  border-left: none;
+  border-top: none;
+  border-color: rgba(168, 85, 247, 0.6);
+  clip-path: polygon(0 100%, 100% 0, 100% 100%);
+}
+

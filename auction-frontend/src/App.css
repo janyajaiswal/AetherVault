@@ -1,0 +1,55 @@
+.app-container {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+}
+
+.main-content {
+  margin-left: 280px;
+  width: calc(100% - 280px);
+  min-height: 100vh;
+  position: relative;
+  z-index: 1;
+  padding: 2rem;
+}
+
+.connectBtn {
+    width: 140px;
+    height: 45px;
+    position: fixed;
+    bottom: 3%;
+    right: 3%;
+    border: 2px solid rgba(255, 215, 0, 0.6);
+    border-radius: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    color: white;
+    font-weight: 600;
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.3), rgba(255, 165, 0, 0.2));
+    backdrop-filter: blur(10px);
+    box-shadow: 
+      0 0 20px rgba(255, 215, 0, 0.4),
+      inset 0 0 20px rgba(255, 215, 0, 0.1);
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;
+    z-index: 100;
+    font-family: 'Orbitron', sans-serif;
+    letter-spacing: 1px;
+  }
+  
+  .connectBtn:hover {
+    box-shadow: 
+      0 0 30px rgba(255, 215, 0, 0.6),
+      inset 0 0 30px rgba(255, 215, 0, 0.2);
+    transform: translateY(-3px);
+    border-color: rgba(255, 215, 0, 0.8);
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.4), rgba(255, 165, 0, 0.3));
+  }
+  
+  .connectBtn:active {
+    transform: scale(0.95) translateY(-1px);
+  }
+
+  

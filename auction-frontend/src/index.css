@@ -1,0 +1,151 @@
+/** Dark theme backgorund for the entire app **/
+/** make the page scrollable and hide the scroll bar **/
+/** need futuristic, robotic fonts **/
+/* html, body, #root {
+    scroll-behavior: auto;
+    overflow: hidden;
+    height: 100%;
+    width: 100%;
+    background: linear-gradient(180deg, #000000 0%, #1a1a1a 100%);
+    color: white;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 900;
+    font-size: 16px;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    overflow: hidden;
+} */
+
+* {
+  box-sizing: border-box;
+  font-family: 'Orbitron', sans-serif;
+}
+body, html {
+  font-family: 'Orbitron', sans-serif;
+}
+
+::-webkit-scrollbar {
+    display: none;
+  }
+  
+  /* For IE, Edge */
+  html, body {
+    -ms-overflow-style: none; /* IE and Edge */
+  }
+  
+  /* For Firefox */
+  html, body {
+    scrollbar-width: none; /* Firefox */
+  }
+  
+
+html, body, #root {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    font-family: 'Orbitron', sans-serif;
+    background: #000000;
+    color: #ffffff;
+    scroll-behavior: smooth;
+    position: relative;
+  }
+  
+  
+
+  
+/** Card containder **/  
+  .card-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .header {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    padding: 50px;
+  }
+
+
+  /** Place Bid Button **/
+.btn {
+    display: inline-block;
+    padding: 0.9rem 1.8rem;
+    font-size: 16px;
+    font-weight: 700;
+    color: white;
+    border: 2px solid rgba(255, 215, 0, 0.6);
+    cursor: pointer;
+    position: relative;
+    background: rgba(255, 215, 0, 0.1);
+    backdrop-filter: blur(10px);
+    text-decoration: none;
+    overflow: hidden;
+    z-index: 1;
+    font-family: 'Orbitron', sans-serif;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+   }
+   
+   .btn::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.4), rgba(255, 165, 0, 0.3));
+    transform: translateX(-100%);
+    transition: all .3s;
+    z-index: -1;
+   }
+   
+   .btn:hover::before {
+    transform: translateX(0);
+   }
+
+   .btn:hover {
+    border-color: rgba(255, 215, 0, 0.8);
+    box-shadow: 0 0 25px rgba(255, 215, 0, 0.5);
+    transform: translateY(-2px);
+   }
+
+   /** auction and assets container **/
+   .auction-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    padding: 50px;
+    position: relative;
+    z-index: 1;
+   }
+
+   /** mint button container **/
+   .mint-button-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    padding: 50px;
+    position: relative;
+    z-index: 1;
+   }

@@ -2,7 +2,7 @@
 .auction-container {
   padding: 1rem;
   color: white;
-  font-family: 'Arial', sans-serif;
+  font-family: "Arial", sans-serif;
 }
 
 .mint-header-actions {
@@ -49,8 +49,8 @@
   padding: 2rem;
   border-radius: 15px;
   box-shadow: 0 0 20px rgba(88, 188, 130, 0.3);
-  width: 400px; 
-  flex-shrink: 0; 
+  width: 400px;
+  flex-shrink: 0;
 }
 
 .mint-heading {
@@ -149,7 +149,7 @@ input:focus {
   width: 250px;
   text-align: center;
   box-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
-  display:flex;
+  display: flex;
   flex-direction: column;
   align-items: center;
   /* justify-content: center; */
@@ -181,18 +181,17 @@ input:focus {
     flex-direction: column;
     align-items: center;
     margin-top: 60px;
-    justify-content:flex-start;
+    justify-content: flex-start;
     width: 250px;
     flex-shrink: 0;
   }
-  
 
   .mint-btn-img {
     width: 220px;
     transform: rotate(-15deg);
     transition: transform 0.3s ease-in-out;
   }
-  
+
   .mint-btn-img:hover {
     transform: rotate(-15deg) scale(1.05);
   }
@@ -209,8 +208,6 @@ input:focus {
     height: 100%; /* let it match the height of the form */
     width: 200px;
   }
-  
-  
 }
 
 .status-section {
@@ -222,6 +219,3 @@ input:focus {
   text-align: center;
   gap: 0.1rem;
 }
-
-
-

@@ -10,52 +10,61 @@ const BulkMint = ({ onClose }) => {
   const [minting, setMinting] = useState(false)
   const [progress, setProgress] = useState({ current: 0, total: 0 })
 
-  // Handle CSV file upload
-  const handleCSVUpload = (e) => {
-    const file = e.target.files[0]
-    if (!file) return
-
-    const reader = new FileReader()
-    reader.onload = (event) => {
-      try {
-        const csv = event.target.result
-        const lines = csv.trim().split('\n')
-        
-        // Parse CSV: name,description,price
-        const parsedNfts = lines.slice(1).map((line, idx) => {
-          const [name, description, price] = line.split(',').map(s => s.trim())
-          return {
-            id: idx,
-            name: name || '',
-            description: description || '',
-            price: price || '',
-            imageFile: null,
-            imageURL: null,
-            status: 'pending'
-          }
-        }).filter(nft => nft.name && nft.description && nft.price)
-
-        setNfts(parsedNfts)
-        setStatus(`Loaded ${parsedNfts.length} NFTs from CSV`)
-      } catch (error) {
-        setStatus(`Error parsing CSV: ${error.message}`)
-      }
+  // Add a new empty NFT form
+  const addNewNFT = () => {
+    const newNFT = {
+      id: Date.now(),
+      name: '',
+      description: '',
+      price: '',
+      imageFile: null,
+      imageURL: null,
+      status: 'pending'
     }
-    reader.readAsText(file)
+    setNfts([...nfts, newNFT])
   }
 
-  // Handle image file upload for specific NFT
+  // Remove an NFT from the list
+  const removeNFT = (id) => {
+    setNfts(nfts.filter(nft => nft.id !== id))
+  }
+
+  // Update NFT field
+  const updateNFT = (id, field, value) => {
+    setNfts(nfts.map(nft =>
+      nft.id === id ? { ...nft, [field]: value } : nft
+    ))
+  }
+
+  // Handle image upload for specific NFT
   const handleImageUpload = (e, nftId) => {
     const file = e.target.files[0]
     if (!file) return
 
-    setNfts(prevNfts =>
-      prevNfts.map(nft =>
-        nft.id === nftId
-          ? { ...nft, imageFile: file, status: 'image-pending' }
-          : nft
-      )
-    )
+    updateNFT(nftId, 'imageFile', file)
+  }
+
+  // Validate all NFTs
+  const validateNFTs = () => {
+    for (let nft of nfts) {
+      if (!nft.name.trim()) {
+        setStatus('Please enter name for all NFTs')
+        return false
+      }
+      if (!nft.description.trim()) {
+        setStatus('Please enter description for all NFTs')
+        return false
+      }
+      if (!nft.price || parseFloat(nft.price) <= 0) {
+        setStatus('Please enter valid price for all NFTs')
+        return false
+      }
+      if (!nft.imageFile) {
+        setStatus('Please upload image for all NFTs')
+        return false
+      }
+    }
+    return true
   }
 
   // Upload image to IPFS
@@ -73,10 +82,10 @@ const BulkMint = ({ onClose }) => {
   }
 
   // Mint a single NFT
-  const mintSingleNFT = async (nft, provider, signer, contract, listingPrice) => {
+  const mintSingleNFT = async (nft, contract, listingPrice) => {
     try {
       // Upload image
-      if (!nft.imageFile && !nft.imageURL) {
+      if (!nft.imageFile) {
         throw new Error('No image file selected')
       }
 
@@ -117,7 +126,11 @@ const BulkMint = ({ onClose }) => {
   // Bulk mint all NFTs
   const handleBulkMint = async () => {
     if (nfts.length === 0) {
-      setStatus('Please load NFTs first')
+      setStatus('Please add at least one NFT')
+      return
+    }
+
+    if (!validateNFTs()) {
       return
     }
 
@@ -145,7 +158,7 @@ const BulkMint = ({ onClose }) => {
       for (let i = 0; i < nfts.length; i++) {
         try {
           setStatus(`Minting NFT ${i + 1} of ${nfts.length}: ${nfts[i].name}...`)
-          await mintSingleNFT(nfts[i], provider, signer, contract, listingPrice)
+          await mintSingleNFT(nfts[i], contract, listingPrice)
           
           setNfts(prevNfts =>
             prevNfts.map((nft, idx) =>
@@ -184,59 +197,14 @@ const BulkMint = ({ onClose }) => {
         </div>
 
         <div className="bulk-mint-content">
-          {/* CSV Upload */}
-          <div className="section">
-            <h3>Step 1: Upload CSV</h3>
-            <p className="hint">CSV format: name, description, price</p>
-            <label className="file-input">
-              <span>Choose CSV File</span>
-              <input type="file" accept=".csv" onChange={handleCSVUpload} />
-            </label>
+          {/* Instructions */}
+          <div className="instructions">
+            <p>Add NFTs one by one using the form below, then mint them all together.</p>
           </div>
-
-          {/* NFT List */}
-          {nfts.length > 0 && (
-            <div className="section">
-              <h3>Step 2: Upload Images ({nfts.length} NFTs)</h3>
-              <div className="nft-list">
-                {nfts.map((nft, idx) => (
-                  <div key={idx} className={`nft-item status-${nft.status}`}>
-                    <div className="nft-info">
-                      <p className="nft-name">{nft.name}</p>
-                      <p className="nft-price">{nft.price} ETH</p>
-                      <p className="nft-desc">{nft.description.substring(0, 50)}...</p>
-                    </div>
-                    
-                    {nft.status !== 'minted' && nft.status !== 'failed' && (
-                      <label className="image-input">
-                        <span>Upload Image</span>
-                        <input
-                          type="file"
-                          accept="image/*"
-                          onChange={(e) => handleImageUpload(e, nft.id)}
-                        />
-                      </label>
-                    )}
-                    
-                    {nft.imageFile && (
-                      <p className="image-ok">✓ {nft.imageFile.name}</p>
-                    )}
-
-                    {nft.status === 'minted' && (
-                      <span className="status-badge success">Minted</span>
-                    )}
-                    {nft.status === 'failed' && (
-                      <span className="status-badge error" title={nft.error}>Failed</span>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
 
           {/* Status */}
           {status && (
-            <div className="status-box">
+            <div className={`status-box ${minting ? 'minting' : ''}`}>
               <p>{status}</p>
             </div>
           )}
@@ -256,13 +224,112 @@ const BulkMint = ({ onClose }) => {
             </div>
           )}
 
+          {/* NFT Forms */}
+          <div className="nft-forms-container">
+            {nfts.map((nft, idx) => (
+              <div key={nft.id} className={`nft-form status-${nft.status}`}>
+                <div className="form-header">
+                  <h3>NFT #{idx + 1}</h3>
+                  {nft.status === 'minted' && (
+                    <span className="status-badge success">✓ Minted</span>
+                  )}
+                  {nft.status === 'failed' && (
+                    <span className="status-badge error" title={nft.error}>✗ Failed</span>
+                  )}
+                  {nft.status !== 'minted' && nft.status !== 'failed' && (
+                    <button
+                      type="button"
+                      className="remove-btn"
+                      onClick={() => removeNFT(nft.id)}
+                    >
+                      ✕ Remove
+                    </button>
+                  )}
+                </div>
+
+                {nft.status !== 'minted' && nft.status !== 'failed' && (
+                  <div className="form-fields">
+                    <div className="form-group">
+                      <label>NFT Name</label>
+                      <input
+                        type="text"
+                        placeholder="e.g., Cosmic Art #1"
+                        value={nft.name}
+                        onChange={(e) => updateNFT(nft.id, 'name', e.target.value)}
+                        disabled={minting}
+                      />
+                    </div>
+
+                    <div className="form-group">
+                      <label>Description</label>
+                      <textarea
+                        placeholder="Describe your NFT"
+                        value={nft.description}
+                        onChange={(e) => updateNFT(nft.id, 'description', e.target.value)}
+                        disabled={minting}
+                      />
+                    </div>
+
+                    <div className="form-group">
+                      <label>Price (ETH)</label>
+                      <input
+                        type="number"
+                        step="0.001"
+                        placeholder="0.5"
+                        value={nft.price}
+                        onChange={(e) => updateNFT(nft.id, 'price', e.target.value)}
+                        disabled={minting}
+                      />
+                    </div>
+
+                    <div className="form-group">
+                      <label>Image</label>
+                      <label className="file-input">
+                        {nft.imageFile ? (
+                          <>
+                            <span className="file-name">✓ {nft.imageFile.name}</span>
+                          </>
+                        ) : (
+                          <>
+                            <span>Choose Image</span>
+                          </>
+                        )}
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={(e) => handleImageUpload(e, nft.id)}
+                          disabled={minting}
+                        />
+                      </label>
+                    </div>
+                  </div>
+                )}
+
+                {(nft.status === 'minted' || nft.status === 'failed') && (
+                  <div className="form-result">
+                    <p className={nft.status === 'minted' ? 'success' : 'error'}>
+                      {nft.status === 'minted' ? '✓ Successfully minted!' : `✗ ${nft.error}`}
+                    </p>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+
+          {/* Add More Button */}
+          {!minting && (
+            <button className="add-nft-btn" onClick={addNewNFT}>
+              <span className="plus-icon">+</span> Add NFT
+            </button>
+          )}
+
           {/* Mint Button */}
           <button
             className="mint-btn"
             onClick={handleBulkMint}
-            disabled={nfts.length === 0 || minting || nfts.some(nft => !nft.imageFile)}
+            disabled={nfts.length === 0 || minting}
           >
-            {minting ? `Minting... (${progress.current}/${progress.total})` : 'Start Bulk Minting'}
+            {minting ? `Minting... (${progress.current}/${progress.total})` : `Bulk Mint All (${nfts.length})`}
           </button>
         </div>
       </div>

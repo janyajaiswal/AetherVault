@@ -3,24 +3,12 @@ import './styles/MintButton.css'
 
 const MintButton = ({onClick}) => {
   return (
-    <button class="mint-button" onClick={onClick}>
-        <div class="lid">
-            <span class="side top"></span>
-            <span class="side front"></span>
-            <span class="side back"> </span>
-            <span class="side left"></span>
-            <span class="side right"></span>
-        </div>
-        <div class="panels">
-            <div class="panel-1">
-            <div class="panel-2">
-                <div class="btn-trigger">
-                <span class="btn-trigger-1"></span>
-                <span class="btn-trigger-2"></span>
-                </div>
-            </div>
-            </div>
-        </div>
+    <button className="mint-button" onClick={onClick}>
+      <span className="mint-button-text">
+        <span className="mint-icon">✨</span>
+        Start Minting
+      </span>
+      <div className="mint-button-shine"></div>
     </button>
   )
 }

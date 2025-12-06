@@ -1,38 +1,73 @@
-# AetherVault🌟 AetherVault 🌟
+# AetherVault# AetherVault🌟 AetherVault 🌟
 
-NFT Auction DApp - A decentralized marketplace for minting, buying, and auctioning NFTs on the blockchain.## 🔥An NFT Marketplace and Auction platform (DApp)🔥
 
-## OverviewNFT Auction DApp - A decentralized marketplace for minting, buying, and auctioning NFTs on the blockchain.- This project is a full-featured NFT Auction platform DApp, designed and built from scratch.
 
-AetherVault is a full-stack decentralized application built with Solidity smart contracts and React. It enables users to create and trade NFTs through direct sales or time-based auctions with real-time bidding.### 🎊 It enables users to:
+A decentralized NFT auction marketplace built on Ethereum. Users can mint, buy, and auction NFTs with real-time bidding.NFT Auction DApp - A decentralized marketplace for minting, buying, and auctioning NFTs on the blockchain.## 🔥An NFT Marketplace and Auction platform (DApp)🔥
 
-## Features## Overview- ✅ Mint/Create NFTs (Deeds Page)
 
-### NFT Management - Users can create their own NFTs by uploading metadata and minting them directly on blockchain.
+
+## Features## OverviewNFT Auction DApp - A decentralized marketplace for minting, buying, and auctioning NFTs on the blockchain.- This project is a full-featured NFT Auction platform DApp, designed and built from scratch.
+
+
+
+- Mint custom NFTs on-chainAetherVault is a full-stack decentralized application built with Solidity smart contracts and React. It enables users to create and trade NFTs through direct sales or time-based auctions with real-time bidding.### 🎊 It enables users to:
+
+- Browse and purchase NFTs from the marketplace
+
+- Create and participate in NFT auctions## Features## Overview- ✅ Mint/Create NFTs (Deeds Page)
+
+- Real-time bidding system
+
+- MetaMask wallet integration### NFT Management - Users can create their own NFTs by uploading metadata and minting them directly on blockchain.
+
+- User dashboard with owned NFTs and transaction history
 
 - Mint new NFTs directly on-chain with metadata
 
+## Tech Stack
+
 - View NFT collection in personal dashboardAetherVault is a full-stack decentralized application built with Solidity smart contracts and React. It enables users to create and trade NFTs through direct sales or time-based auctions with real-time bidding. - Minted NFTs instantly appear in the user's Profile dashboard.
 
-- Transfer ownership of NFTs
+- Solidity smart contracts with OpenZeppelin
 
-## Features- ✅ View all NFTs (Marketplace Page)
+- React + Vite frontend- Transfer ownership of NFTs
+
+- ethers.js for Web3 integration
+
+- Tailwind CSS for styling## Features- ✅ View all NFTs (Marketplace Page)
+
+- Pinata for NFT storage
 
 ### Marketplace
 
+## Getting Started
+
 - Browse all available NFTs - All listed NFTs are displayed in the Marketplace for easy browsing.
 
-- Purchase NFTs at fixed prices
+1. Clone the repository
 
-- View NFT details, ownership history, and pricing**NFT Management** - Users can view details like name, description, owner, and price.
+2. Install dependencies: `npm install`- Purchase NFTs at fixed prices
 
-### Auction System- Mint new NFTs directly on-chain with metadata
+3. Configure Ganache or your preferred Ethereum network
 
-- Create timed auctions for NFTs
+4. Deploy contracts: `truffle compile && truffle migrate`- View NFT details, ownership history, and pricing**NFT Management** - Users can view details like name, description, owner, and price.
 
-- Participate in live bidding- View NFT collection in personal dashboard- ✅ Buy NFTs Directly (Marketplace Page — Fixed Price Buy)
+5. Install frontend dependencies: `cd auction-frontend && npm install`
 
-- Automatic winner determination based on highest bid
+6. Start dev server: `npm run dev`### Auction System- Mint new NFTs directly on-chain with metadata
+
+
+
+The app will be available at `http://localhost:5173`- Create timed auctions for NFTs
+
+
+
+## License- Participate in live bidding- View NFT collection in personal dashboard- ✅ Buy NFTs Directly (Marketplace Page — Fixed Price Buy)
+
+
+
+MIT- Automatic winner determination based on highest bid
+
 
 - Claim won NFTs after auction ends- Transfer ownership of NFTs - Users can purchase listed NFTs instantly by paying the fixed price.
 

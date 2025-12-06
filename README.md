@@ -1,24 +1,14 @@
 # AetherVault🌟 AetherVault 🌟
 
-
-
 NFT Auction DApp - A decentralized marketplace for minting, buying, and auctioning NFTs on the blockchain.## 🔥An NFT Marketplace and Auction platform (DApp)🔥
-
-
 
 ## OverviewNFT Auction DApp - A decentralized marketplace for minting, buying, and auctioning NFTs on the blockchain.- This project is a full-featured NFT Auction platform DApp, designed and built from scratch.
 
-
-
 AetherVault is a full-stack decentralized application built with Solidity smart contracts and React. It enables users to create and trade NFTs through direct sales or time-based auctions with real-time bidding.### 🎊 It enables users to:
-
-
 
 ## Features## Overview- ✅ Mint/Create NFTs (Deeds Page)
 
-
-
-### NFT Management     - Users can create their own NFTs by uploading metadata and minting them directly on blockchain.
+### NFT Management - Users can create their own NFTs by uploading metadata and minting them directly on blockchain.
 
 - Mint new NFTs directly on-chain with metadata
 
@@ -30,13 +20,11 @@ AetherVault is a full-stack decentralized application built with Solidity smart 
 
 ### Marketplace
 
-- Browse all available NFTs     - All listed NFTs are displayed in the Marketplace for easy browsing.
+- Browse all available NFTs - All listed NFTs are displayed in the Marketplace for easy browsing.
 
 - Purchase NFTs at fixed prices
 
 - View NFT details, ownership history, and pricing**NFT Management** - Users can view details like name, description, owner, and price.
-
-
 
 ### Auction System- Mint new NFTs directly on-chain with metadata
 
@@ -80,8 +68,6 @@ AetherVault is a full-stack decentralized application built with Solidity smart 
 
 - Sepolia testnet support- Participate in live bidding - The highest bidder at auction end wins the NFT.
 
-
-
 ### Frontend- Automatic winner determination based on highest bid
 
 - React 19 with Vite
@@ -122,7 +108,7 @@ cd AetherVault- NFT storage via Pinata IPFS
 
 2. Install root dependencies:
 
-```bash## Tech Stack - Users can view all NFTs they own in their profile dashboard.
+````bash## Tech Stack - Users can view all NFTs they own in their profile dashboard.
 
 npm install
 
@@ -172,7 +158,7 @@ npm install
 
 npm run dev- Web3.js for additional Web3 utilities- Clone the repository to local
 
-```
+````
 
 - Tailwind CSS for styling- Setup Ganache
 
@@ -184,7 +170,7 @@ The application will be available at `http://localhost:5173`
 
 - In terminal, execute "truffle compile"
 
-```
+```````
 
 AetherVault/**Storage & Services**- In terminal, execute "truffle migrate"
 
@@ -236,9 +222,9 @@ Build for production:![image](https://github.com/user-attachments/assets/3b0f4bd
 
 npm run build2. Install root dependencies:
 
-```
+```````
 
-```bash
+`````bash
 
 Lint the code:npm install
 
@@ -285,7 +271,7 @@ This project is open source and available for educational and commercial use.```
 cd auction-frontend
 npm install
 npm run dev
-```
+`````
 
 The application will be available at `http://localhost:5173`
 

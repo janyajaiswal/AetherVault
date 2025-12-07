@@ -4,6 +4,7 @@ import NavBar from './components/NavBar';
 import Auctions from './components/Auctions';
 import Deeds from './components/Deeds';
 import Profile from './components/Profile';
+import Stats from './components/Stats';
 import { Route, Routes } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { requestAccount } from './services/blockchainService';
@@ -51,6 +52,7 @@ const App = () => {
           <Route path="/" element={<Marketplace />} />
           <Route path="/auction" element={<Auctions />} />
           <Route path="/deed" element={<Deeds />} />
+          <Route path="/stats" element={<Stats />} />
           <Route path="/profile" element={<Profile />} />
         </Routes>
       </main>

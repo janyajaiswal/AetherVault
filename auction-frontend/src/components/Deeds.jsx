@@ -1,5 +1,4 @@
 import React from 'react'
-import MintButton from './MintButton'
 import BulkMint from './BulkMint'
 import './styles/Deeds.css'
 import { useState, useEffect } from 'react';
@@ -148,7 +147,7 @@ const Deeds = () => {
       // refresh the page
       window.location.reload();
     } catch (e) {
-      console.error("Error minting the token: ", e);
+      console.error("Error creating the token: ", e);
       // Show friendly error message without technical details
       let userMessage = "❌ Transaction failed. Please try again.";
       
@@ -160,7 +159,7 @@ const Deeds = () => {
       }
       
       setStatus(userMessage);
-      alert("Error: Unable to mint NFT. Please check your wallet and try again.");
+      alert("Error: Unable to create NFT. Please check your wallet and try again.");
     }
   }
 
@@ -237,21 +236,17 @@ const Deeds = () => {
       )}
       
       <div className='auction-container'>
-        <div className="mint-header-actions">
-          <h1>Mint a Deed</h1>
-          <button
-            className="bulk-mint-toggle-btn"
-            onClick={() => setShowBulkMint(true)}
-          >
-            Bulk Mint
-          </button>
+        <div className="mint-header">
+          <h1>Create NFT</h1>
+          <p className="mint-subtitle">Generate and list your digital assets on the marketplace</p>
         </div>
-        <h2>{status}</h2>
+        
+        {status && <div className="status-message">{status}</div>}
 
         <div className="mint-section">
-          {/* LEFT: Form Box */}
+          {/* Form Container */}
           <div className="form-container">
-            <h2 className="mint-heading">Add an NFT</h2>
+            <h2 className="mint-heading">NFT Details</h2>
             <form className="form" onSubmit={listNFT}>
               <span className="input-span">
                 <label htmlFor="name" className="label">Name</label>
@@ -272,12 +267,26 @@ const Deeds = () => {
                 <label htmlFor="image" className="label">Image</label>
                 <input type="file" id="image" onChange={OnChangeFile} />
               </span>
-            </form>
-          </div>
 
-          {/* RIGHT: Mint Button Centered */}
-          <div className="mint-button-side">
-            <MintButton onClick={listNFT} />
+              {/* Action Buttons */}
+              <div className="mint-action-buttons">
+                <button
+                  type="button"
+                  className="bulk-mint-btn"
+                  onClick={() => setShowBulkMint(true)}
+                >
+                  <span className="btn-icon">📦</span>
+                  Batch Create
+                </button>
+                <button
+                  type="submit"
+                  className="start-mint-btn"
+                >
+                  <span className="btn-icon">✨</span>
+                  Create NFT
+                </button>
+              </div>
+            </form>
           </div>
         </div>
 

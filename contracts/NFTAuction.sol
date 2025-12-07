@@ -240,10 +240,11 @@ contract NFTAuction is ERC721URIStorage {
         // approve(address(this), tokenId);
     }
 
-    // update the new seller of the token after auction
-    function updateOwner(uint tokenId, address newSeller) public {
-        idToListedToken[tokenId].owner = payable(newSeller);
-        idToListedToken[tokenId].seller = payable(newSeller);
+    // update the new owner of the token after auction (seller remains the original seller)
+    function updateOwner(uint tokenId, address newOwner) public {
+        idToListedToken[tokenId].owner = payable(newOwner);
+        // Do NOT update seller - it should remain as the original seller who minted/listed the NFT
+        // idToListedToken[tokenId].seller = payable(newOwner); // REMOVED: This was causing owner and seller to be the same
     }
 
     // update the new price of the token after auction

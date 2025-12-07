@@ -20,15 +20,19 @@ const NavBar = ({account}) => {
             </CustomLink>
             <CustomLink to="/auction" className="nav-button">
               <span className="nav-icon">⚡</span>
-              <span className="nav-label">Auctions</span>
+              <span className="nav-label">Bidding</span>
             </CustomLink>
             <CustomLink to="/deed" className="nav-button">
               <span className="nav-icon">✨</span>
-              <span className="nav-label">Deeds</span>
+              <span className="nav-label">Mint</span>
+            </CustomLink>
+            <CustomLink to="/stats" className="nav-button">
+              <span className="nav-icon">📊</span>
+              <span className="nav-label">Analytics</span>
             </CustomLink>
             <CustomLink to="/profile" className="nav-button">
               <span className="nav-icon">👤</span>
-              <span className="nav-label">Profile</span>
+              <span className="nav-label">Account</span>
             </CustomLink>
         </ul>
         {account && (

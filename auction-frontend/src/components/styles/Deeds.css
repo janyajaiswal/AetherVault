@@ -5,68 +5,61 @@
   font-family: "Arial", sans-serif;
 }
 
-.mint-header-actions {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.mint-header {
+  text-align: center;
   margin-bottom: 2rem;
-  flex-wrap: wrap;
-  gap: 20px;
 }
 
-.mint-header-actions h1 {
+.mint-header h1 {
   margin: 0;
-  flex: 1;
+  font-size: 2.5rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 0.5rem;
 }
 
-.bulk-mint-toggle-btn {
-  padding: 12px 24px;
-  background: linear-gradient(135deg, #00d4ff, #0099ff);
-  color: #000;
-  border: none;
+.mint-subtitle {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 1rem;
+  margin: 0;
+}
+
+.status-message {
+  text-align: center;
+  padding: 1rem;
+  margin: 1rem 0;
+  background: rgba(102, 126, 234, 0.1);
+  border: 1px solid rgba(102, 126, 234, 0.3);
   border-radius: 8px;
-  font-weight: 600;
-  font-size: 14px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3);
-  white-space: nowrap;
-}
-
-.bulk-mint-toggle-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(0, 212, 255, 0.4);
-}
-
-.bulk-mint-toggle-btn:active {
-  transform: translateY(0);
+  color: #fff;
 }
 
 .mint-section {
   display: flex;
   justify-content: center;
   align-items: stretch;
-  gap: 60px;
+  gap: 0;
   margin: 2rem auto;
   flex-wrap: wrap;
-  padding: 2rem;
-  background: linear-gradient(
-    135deg,
-    rgba(26, 26, 46, 0.5) 0%,
-    rgba(22, 33, 62, 0.5) 100%
-  );
-  border: 1px solid rgba(100, 200, 255, 0.1);
-  border-radius: 12px;
+  max-width: 600px;
 }
 
 /* Form Container */
 .form-container {
-  background: #1e1e1e;
-  padding: 2rem;
-  border-radius: 15px;
-  box-shadow: 0 0 20px rgba(88, 188, 130, 0.3);
-  width: 400px;
+  background: rgba(30, 30, 30, 0.9);
+  backdrop-filter: blur(10px);
+  padding: 2.5rem;
+  border-radius: 20px;
+  box-shadow: 
+    0 10px 40px rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(102, 126, 234, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  width: 100%;
+  max-width: 600px;
   flex-shrink: 0;
+  border: 1px solid rgba(102, 126, 234, 0.3);
 }
 
 .mint-heading {
@@ -121,6 +114,114 @@ input:focus {
 
 .submit:hover {
   background: #7dfcb1;
+}
+
+/* Action Buttons Container */
+.mint-action-buttons {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+}
+
+.mint-action-buttons button {
+  flex: 1;
+  min-width: 200px;
+  padding: 1rem 2rem;
+  border: none;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-icon {
+  font-size: 1.25rem;
+}
+
+/* Bulk Mint Button */
+.bulk-mint-btn {
+  background: linear-gradient(135deg, #00d4ff 0%, #0099ff 100%);
+  color: #000;
+  box-shadow: 
+    0 4px 15px rgba(0, 212, 255, 0.4),
+    0 0 0 0 rgba(0, 212, 255, 0.5);
+}
+
+.bulk-mint-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: left 0.5s ease;
+}
+
+.bulk-mint-btn:hover::before {
+  left: 100%;
+}
+
+.bulk-mint-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 
+    0 8px 25px rgba(0, 212, 255, 0.5),
+    0 0 0 4px rgba(0, 212, 255, 0.2);
+}
+
+.bulk-mint-btn:active {
+  transform: translateY(0);
+  box-shadow: 
+    0 2px 10px rgba(0, 212, 255, 0.3),
+    0 0 0 2px rgba(0, 212, 255, 0.2);
+}
+
+/* Start Minting Button */
+.start-mint-btn {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #fff;
+  box-shadow: 
+    0 4px 15px rgba(102, 126, 234, 0.4),
+    0 0 0 0 rgba(102, 126, 234, 0.5);
+}
+
+.start-mint-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s ease;
+}
+
+.start-mint-btn:hover::before {
+  left: 100%;
+}
+
+.start-mint-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 
+    0 8px 25px rgba(102, 126, 234, 0.5),
+    0 0 0 4px rgba(102, 126, 234, 0.2);
+}
+
+.start-mint-btn:active {
+  transform: translateY(0);
+  box-shadow: 
+    0 2px 10px rgba(102, 126, 234, 0.3),
+    0 0 0 2px rgba(102, 126, 234, 0.2);
 }
 
 /* Mint Button Section (right side) */
@@ -187,42 +288,21 @@ input:focus {
 
 /* Responsive Enhancements */
 @media (max-width: 768px) {
-  .mint-section {
+  .mint-header h1 {
+    font-size: 2rem;
+  }
+
+  .form-container {
+    padding: 1.5rem;
+  }
+
+  .mint-action-buttons {
     flex-direction: column;
-    align-items: center;
   }
 
-  .mint-button-area {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 60px;
-    justify-content: flex-start;
-    width: 250px;
-    flex-shrink: 0;
-  }
-
-  .mint-btn-img {
-    width: 220px;
-    transform: rotate(-15deg);
-    transition: transform 0.3s ease-in-out;
-  }
-
-  .mint-btn-img:hover {
-    transform: rotate(-15deg) scale(1.05);
-  }
-  .mint-btn-wrapper {
-    display: flex;
-    justify-content: center;
-    margin-top: 1.5rem;
-  }
-  .mint-button-side {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    height: 100%; /* let it match the height of the form */
-    width: 200px;
+  .mint-action-buttons button {
+    min-width: 100%;
+    width: 100%;
   }
 }
 

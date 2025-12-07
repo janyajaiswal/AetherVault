@@ -748,7 +748,7 @@
         },
         {
           "internalType": "address",
-          "name": "newSeller",
+          "name": "newOwner",
           "type": "address"
         }
       ],
@@ -780,8 +780,8 @@
     "5777": {
       "events": {},
       "links": {},
-      "address": "0xF28775Bd0CA0e1c19AEdC4E6AFC89c54Bb7980a4",
-      "transactionHash": "0xe7cca4b4bf86cc18f2d8749e133095489e1e3df891ac79a687cd671803e62ab9"
+      "address": "0xce0aaBb73A3fb3996BcB0B109fdcbFf5AaeAf2fF",
+      "transactionHash": "0x3c8cb6882bc14eb5e2eb8bdb596ccb21b0591c3a8e3062770caba7fc1d976e46"
     }
   }
 }

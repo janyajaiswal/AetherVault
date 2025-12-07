@@ -24,14 +24,18 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    const handleAccountChanged = (newAccounts) => setAccount(newAccounts.length > 0 ? newAccounts[0] : null);
+    const handleAccountChanged = (newAccounts) => {
+      const newAccount = newAccounts.length > 0 ? newAccounts[0] : null;
+      setAccount(newAccount);
+      setCurrAddress(newAccount);
+    };
     if(window.ethereum){
       window.ethereum.on("accountsChanged", handleAccountChanged);
     }
     return () => {
       window.ethereum?.removeListener("accountsChanged", handleAccountChanged);
     };
-  });
+  }, []);
 
   async function connectWallet() {
     try{

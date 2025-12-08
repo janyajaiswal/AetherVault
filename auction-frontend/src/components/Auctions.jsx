@@ -461,28 +461,29 @@ const Auctions = () => {
       console.log("Price in Wei:", priceInWei.toString());
       console.log("Duration in seconds:", durationInSeconds);
 
-      // Confirm you're the owner
+      // Get signer address and verify ownership
       const signerAddress = await signer.getAddress();
       const listing = await nftContract.getListedTokenForId(tokenId);
+
+      // Verify user is the seller
       if (listing.seller.toLowerCase() !== signerAddress.toLowerCase()) {
         alert("You're not the seller of this NFT");
         setLoading(false);
         return;
       }
 
-      // Figure out your Auction contract address
+      // For unlisted NFTs (owned by user), we need to approve the Auction contract to transfer
+      const currentOwner = await nftContract.ownerOf(tokenId);
       const auctionContractAddress = await auctionContract.getAddress();
-      console.log("Auction contract address:", auctionContractAddress);
-
-      // Approve this token for auctioning
-      console.log("Approving token for auction contract…");
-      const approvalTx = await nftContract.approveTokenForAuction(
-        tokenId,
-        auctionContractAddress
-      );
-      console.log(`⏳ Waiting for approval tx ${approvalTx.hash}`);
-      await approvalTx.wait();
-      console.log("✅ Token approved for auction contract");
+      
+      if (currentOwner.toLowerCase() === signerAddress.toLowerCase()) {
+        // NFT is owned by user, approve Auction contract to transfer it
+        console.log("Approving Auction contract to transfer NFT…");
+        const approveTx = await nftContract.approve(auctionContractAddress, tokenId);
+        console.log(`⏳ Waiting for approval tx ${approveTx.hash}`);
+        await approveTx.wait();
+        console.log("✅ Auction contract approved to transfer NFT");
+      }
 
       // Create the auction
       console.log("Creating auction…");
@@ -495,14 +496,8 @@ const Auctions = () => {
       await auctionTx.wait();
       console.log("🎉 Auction created successfully");
 
-      // Mark the token as Not Listed in the NFT contract
-      const tx = await nftContract.setTokenListed(tokenId, false);
-      console.log(`⏳ Waiting for mark as not listed tx ${tx.hash}`);
-      await tx.wait();
-      console.log("✅ Token marked as not listed in NFT contract");
-
       // Update your UI state - remove this token from deeds list
-      setDeeds(prev => prev.filter(deed => deed.tokenId !== tokenId));
+      setDeeds(prev => prev.filter(deed => deed.tokenId !== tokenId.toString()));
 
       // Refresh all auction data
       await fetchActiveAuctions(auctionContract, nftContract);

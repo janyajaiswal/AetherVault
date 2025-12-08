@@ -69,14 +69,9 @@ contract Auction is ReentrancyGuard {
         // get token info from NFTAuction contract
         NFTAuction.ListedToken memory tokenInfo = nftContract.getListedTokenForId(tokenId);
 
-        // Check if token is currently listed in NFTAuction
-        // require(tokenInfo.currentlyListed, "Token is not listed for sale");
-        
-        // Check if caller is the seller or the owner of the NFTAuction contract
+        // Check if caller is the seller
         require(
-            tokenInfo.seller == msg.sender || 
-            msg.sender == address(nftContract) ||
-            nftContract.getApproved(tokenId) == address(this),
+            tokenInfo.seller == msg.sender,
             "Not authorized to auction this token"
         );
         
@@ -101,9 +96,13 @@ contract Auction is ReentrancyGuard {
 
         // Check if the auction is not already live
         if(!auctionedItem[tokenId].live) {
-            // Transfer the token to this contract
+            // Determine where the NFT currently is and transfer accordingly
+            address currentOwner = IERC721(address(nftContract)).ownerOf(tokenId);
+            
+            // If owned by user, transfer from user to this contract
+            // If owned by nftContract, transfer from nftContract to this contract
             IERC721(address(nftContract)).transferFrom(
-                address(nftContract),
+                currentOwner,
                 address(this),
                 tokenId
             );

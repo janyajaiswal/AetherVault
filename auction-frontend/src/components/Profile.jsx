@@ -204,11 +204,24 @@ const GetIpfsUrlFromPinata = (pinataUrl) => {
 
 export default function Profile() {
   const [data, setData] = useState([]);
+  const [marketplaceNFTs, setMarketplaceNFTs] = useState([]);
+  const [auctionNFTs, setAuctionNFTs] = useState([]);
+  const [ownedNFTs, setOwnedNFTs] = useState([]);
   const [addr, setAddr] = useState('');
   const [totalPrice, setTotalPrice] = useState(0);
+  const [showListPopup, setShowListPopup] = useState(false);
+  const [selectedNFT, setSelectedNFT] = useState(null);
+  const [listPrice, setListPrice] = useState('');
+  const [status, setStatus] = useState('');
 
   useEffect(() => {
+    // Refresh data every time Profile component is visited
     getNFTData();
+    
+    // Also set up an interval to refresh every 5 seconds for real-time updates
+    const interval = setInterval(getNFTData, 5000);
+    
+    return () => clearInterval(interval);
   }, []);
 
   async function getNFTData() {
@@ -227,7 +240,7 @@ export default function Profile() {
         signer
       );
 
-      // 3) fetch user's NFTs
+      // 3) fetch user's NFTs - pass false to get ALL NFTs (both listed and unlisted)
       const raw = await contract.getMyNFTs(true);
 
       // 4) hydrate them
@@ -257,13 +270,29 @@ export default function Profile() {
 
       setData(items);
       setTotalPrice(sum);
+      
+      // Categorize NFTs
+      const marketplace = items.filter(item => item.isListed === true);
+      const auctioned = items.filter(item => item.inAuction === true);
+      const owned = items.filter(item => item.isListed !== true && item.inAuction !== true);
+      
+      setMarketplaceNFTs(marketplace);
+      setAuctionNFTs(auctioned);
+      setOwnedNFTs(owned);
     } catch (err) {
       console.error('Failed to load NFTs:', err);
     }
   }
 
-  async function listNFT(tokenId, price) {
+  async function listNFTOnMarketplace() {
+    if (!selectedNFT || !listPrice) {
+      alert('Please enter a price');
+      return;
+    }
+
     try {
+      setStatus('⏳ Listing NFT on marketplace...');
+      
       const provider = await getProvider();
       const signer = await provider.getSigner();
       const contract = new ethers.Contract(
@@ -272,32 +301,86 @@ export default function Profile() {
         signer
       );
 
-      // Call the listNFT function from the contract
-      const priceInEther = ethers.parseUnits(price, 'ether');
-      let listingPrice = await contract.getListPrice();
-      listingPrice = listingPrice.toString();
-
-      const tx = await contract.listNFTAgain(tokenId, priceInEther, { value: listingPrice });
-      await tx.wait(); // Wait for the transaction to be mined
+      // Get listing fee
+      const listingFee = await contract.getListPrice();
+      
+      // Parse the price the user entered
+      const priceWei = ethers.parseEther(listPrice.toString());
+      
+      const tx = await contract.listNFTAgain(selectedNFT.tokenId, priceWei, { value: listingFee });
+      await tx.wait();
+      
+      setStatus('✅ NFT listed successfully!');
       
       // Update only the specific NFT's listing status
-      setData(prevData => 
-        prevData.map(item => 
-          item.tokenId === tokenId 
-            ? { ...item, isListed: true } 
-            : item
-        )
+      const updatedData = data.map(item => 
+        item.tokenId === selectedNFT.tokenId
+          ? { ...item, isListed: true }
+          : item
       );
+      setData(updatedData);
       
-      alert('NFT listed successfully!');
-      console.log('NFT listed successfully!');
+      // Recategorize NFTs after listing
+      const marketplace = updatedData.filter(item => item.isListed === true);
+      const auctioned = updatedData.filter(item => item.inAuction === true);
+      const owned = updatedData.filter(item => item.isListed !== true && item.inAuction !== true);
+      
+      setMarketplaceNFTs(marketplace);
+      setAuctionNFTs(auctioned);
+      setOwnedNFTs(owned);
+      
+      setShowListPopup(false);
+      setListPrice('');
+      setSelectedNFT(null);
+      
+      setTimeout(() => {
+        setStatus('');
+      }, 3000);
+      
+      alert('✅ NFT listed successfully!');
     } catch (error) {
       console.error('Error listing NFT:', error);
+      setStatus(`❌ Error: ${error.message}`);
+      alert(`Error listing NFT: ${error.message}`);
     }
   }
 
   return (
     <div className="profile-container">
+      {showListPopup && selectedNFT && (
+        <div className="popup-overlay" onClick={() => setShowListPopup(false)}>
+          <div className="popup-content" onClick={(e) => e.stopPropagation()}>
+            <div className="popup-header">
+              <h2>List on Marketplace</h2>
+              <button className="popup-close" onClick={() => setShowListPopup(false)}>×</button>
+            </div>
+            <div className="popup-body">
+              <div className="nft-preview">
+                <img src={selectedNFT.image} alt={selectedNFT.name} />
+                <h3>{selectedNFT.name}</h3>
+              </div>
+              <div className="form-group">
+                <label>Listing Price (ETH)</label>
+                <input
+                  type="number"
+                  step="0.001"
+                  min="0"
+                  value={listPrice}
+                  onChange={(e) => setListPrice(e.target.value)}
+                  placeholder="Enter price in ETH"
+                  className="price-input"
+                />
+              </div>
+              {status && <p className="status-message">{status}</p>}
+              <div className="popup-actions">
+                <button onClick={() => setShowListPopup(false)} className="btn-cancel">Cancel</button>
+                <button onClick={listNFTOnMarketplace} className="btn-publish">Publish to Marketplace</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+      
       <h1 className="profile-heading">Profile</h1>
       <div className="profile-stats">
         <p><strong>Wallet Address:</strong> {addr || 'Not connected'}</p>
@@ -305,25 +388,65 @@ export default function Profile() {
         <p><strong>Total Value:</strong> {totalPrice} ETH</p>
       </div>
 
-      <h2 className="profile-subheading">My NFTs</h2>
-      {data.length === 0 ? (
-        <p className="no-nfts">No NFTs found.</p>
+      <h2 className="profile-subheading">📢 Listed on Marketplace</h2>
+      {marketplaceNFTs.length === 0 ? (
+        <p className="no-nfts">No NFTs listed on marketplace.</p>
       ) : (
         <div className="nft-grid">
-          {data.map((item) => (
+          {marketplaceNFTs.map((item) => (
             <div className="nft-card-profile" key={item.tokenId}>
               <img src={item.image} alt={item.name} />
               <div className="nft-info">
                 <h3>{item.name}</h3>
                 <p>{item.description}</p>
                 <p><strong>Token ID:</strong> {item.tokenId}</p>
-                <p><strong>Owner:</strong> {item.owner}</p>
-                <p><strong>Seller:</strong> {item.seller}</p>
                 <p><strong>Price:</strong> {item.price} ETH</p>
               </div>
-              {!item.isListed && (
-                <button className='offer-button' onClick={() => listNFT(item.tokenId, item.price)}>List on Market</button>
-              )}
+              <span className="badge-listed">Listed</span>
+            </div>
+          ))}
+        </div>
+      )}
+
+      <h2 className="profile-subheading">🏆 In Auctions</h2>
+      {auctionNFTs.length === 0 ? (
+        <p className="no-nfts">No NFTs in auctions.</p>
+      ) : (
+        <div className="nft-grid">
+          {auctionNFTs.map((item) => (
+            <div className="nft-card-profile" key={item.tokenId}>
+              <img src={item.image} alt={item.name} />
+              <div className="nft-info">
+                <h3>{item.name}</h3>
+                <p>{item.description}</p>
+                <p><strong>Token ID:</strong> {item.tokenId}</p>
+                <p><strong>Starting Price:</strong> {item.price} ETH</p>
+              </div>
+              <span className="badge-auction">Auctioning</span>
+            </div>
+          ))}
+        </div>
+      )}
+
+      <h2 className="profile-subheading">💎 Your Collection</h2>
+      {ownedNFTs.length === 0 ? (
+        <p className="no-nfts">No NFTs in your collection.</p>
+      ) : (
+        <div className="nft-grid">
+          {ownedNFTs.map((item) => (
+            <div className="nft-card-profile" key={item.tokenId}>
+              <img src={item.image} alt={item.name} />
+              <div className="nft-info">
+                <h3>{item.name}</h3>
+                <p>{item.description}</p>
+                <p><strong>Token ID:</strong> {item.tokenId}</p>
+                <p><strong>Price:</strong> {item.price} ETH</p>
+              </div>
+              <button className='offer-button' onClick={() => {
+                setSelectedNFT(item);
+                setListPrice(item.price);
+                setShowListPopup(true);
+              }}>📢 List on Marketplace</button>
             </div>
           ))}
         </div>

@@ -78,7 +78,8 @@ const Auctions = () => {
   const fetchDeeds = async (contractInstance) => {
     try {
       console.log("Fetching my NFTs...");
-      const rawDeeds = await contractInstance.getMyNFTs(false);
+      // Pass 'true' to get ALL my NFTs (both listed and unlisted) for auction starting
+      const rawDeeds = await contractInstance.getMyNFTs(true);
       console.log("Raw deeds:", rawDeeds);
 
       // Filter out any tokens with ID 0

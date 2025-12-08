@@ -1,109 +1,303 @@
 .profile-container {
-    color: white;
-    padding: 2rem;
-    font-family: 'Orbitron', sans-serif;
-    text-align: center;
-  }
-  
-  .profile-heading {
-    font-size: 2.5rem;
-    margin-bottom: 1rem;
-    text-shadow: 0 0 40px #7f00ff;
-  }
-  
-  .profile-stats {
-    background: #1a1a1a;
-    border: 1px solid #333;
-    border-radius: 10px;
-    padding: 1.5rem;
-    margin-bottom: 2rem;
-    box-shadow: 0 0 12px rgba(130, 50, 255, 0.2);
-    max-width: 600px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-  
-  .profile-subheading {
-    font-size: 1.75rem;
-    margin-top: 2rem;
-    color: #fff;
-  }
-  
-  .nft-grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 2rem;
-    justify-content: center;
-  }
-  
-  .nft-card-profile {
-    background-color: #1e1e1e;
-    border: 1px solid #444;
-    border-radius: 15px;
-    padding: 1rem;
-    width: 250px;
-    text-align: left;
-    box-shadow: 0 0 12px rgba(255, 255, 255, 0.05);
-    transition: transform 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: space-evenly;
-    flex-direction: column;
-  }
-  
-  .nft-card-profile:hover {
-    transform: translateY(-5px) scale(1.03);
-    box-shadow: 0 0 15px #7f00ff55;
-  }
-  
-  .nft-card-profile img {
-    width: 100%;
-    border-radius: 10px;
-    margin-bottom: 1rem;
-    height: 200px;
-    object-fit: cover;
-  }
+  color: white;
+  padding: 2rem;
+  font-family: "Orbitron", sans-serif;
+  text-align: center;
+}
 
-  .nft-info {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: inherit;
-    flex: 1;
-  }
-  
-  .nft-info h3 {
-    margin: 0.5rem 0;
-    font-size: 1.2rem;
-    color: #ffffff;
-  }
-  
-  .nft-info p {
-    font-size: 0.85rem;
-    color: #ccc;
-    margin: 0.3rem 0;
-    padding: 1rem;
-    width: inherit;
-    word-wrap: break-word;
-    text-wrap: wrap;
-  }
-  
-  .no-nfts {
-    color: #999;
-    margin-top: 1rem;
-  }
-  
-  .offer-button {
-    background-color: #3498db;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    padding: 10px 16px;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-    width: 100%;
-    margin-top: 10px;
-  }
+.profile-heading {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  text-shadow: 0 0 40px #7f00ff;
+}
 
+.profile-stats {
+  background: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 10px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 0 12px rgba(130, 50, 255, 0.2);
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.profile-subheading {
+  font-size: 1.75rem;
+  margin-top: 2rem;
+  color: #fff;
+}
+
+.nft-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  justify-content: center;
+}
+
+.nft-card-profile {
+  background-color: #1e1e1e;
+  border: 1px solid #444;
+  border-radius: 15px;
+  padding: 1rem;
+  width: 250px;
+  text-align: left;
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.05);
+  transition: transform 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  flex-direction: column;
+}
+
+.nft-card-profile:hover {
+  transform: translateY(-5px) scale(1.03);
+  box-shadow: 0 0 15px #7f00ff55;
+}
+
+.nft-card-profile img {
+  width: 100%;
+  border-radius: 10px;
+  margin-bottom: 1rem;
+  height: 200px;
+  object-fit: cover;
+}
+
+.nft-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: inherit;
+  flex: 1;
+}
+
+.nft-info h3 {
+  margin: 0.5rem 0;
+  font-size: 1.2rem;
+  color: #ffffff;
+}
+
+.nft-info p {
+  font-size: 0.85rem;
+  color: #ccc;
+  margin: 0.3rem 0;
+  padding: 1rem;
+  width: inherit;
+  word-wrap: break-word;
+  text-wrap: wrap;
+}
+
+.no-nfts {
+  color: #999;
+  margin-top: 1rem;
+}
+
+.offer-button {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.offer-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+}
+
+.offer-button:active {
+  transform: translateY(0);
+}
+
+/* Popup Overlay */
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+}
+
+.popup-content {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  border: 1px solid rgba(102, 126, 234, 0.3);
+  border-radius: 12px;
+  max-width: 500px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 8px 32px rgba(102, 126, 234, 0.15);
+}
+
+.popup-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px;
+  border-bottom: 1px solid rgba(102, 126, 234, 0.2);
+  background: rgba(26, 26, 46, 0.95);
+}
+
+.popup-header h2 {
+  margin: 0;
+  font-size: 24px;
+  color: #667eea;
+}
+
+.popup-close {
+  background: none;
+  border: none;
+  color: #667eea;
+  font-size: 28px;
+  cursor: pointer;
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.popup-close:hover {
+  color: #ff6b6b;
+}
+
+.popup-body {
+  padding: 24px;
+}
+
+.nft-preview {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.nft-preview img {
+  max-width: 200px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+}
+
+.nft-preview h3 {
+  color: #fff;
+  margin: 0;
+  font-size: 18px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  color: #ccc;
+  font-size: 14px;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.price-input {
+  width: 100%;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(102, 126, 234, 0.3);
+  border-radius: 8px;
+  color: #fff;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.price-input:focus {
+  outline: none;
+  border-color: #667eea;
+  background: rgba(102, 126, 234, 0.1);
+}
+
+.popup-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.btn-cancel {
+  flex: 1;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(102, 126, 234, 0.3);
+  border-radius: 8px;
+  color: #ccc;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn-cancel:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: #667eea;
+}
+
+.btn-publish {
+  flex: 1;
+  padding: 12px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: none;
+  border-radius: 8px;
+  color: white;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn-publish:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+}
+
+.btn-publish:active {
+  transform: translateY(0);
+}
+
+.status-message {
+  background: rgba(102, 126, 234, 0.1);
+  border: 1px solid rgba(102, 126, 234, 0.3);
+  border-radius: 8px;
+  color: #ccc;
+  padding: 12px;
+  margin-bottom: 16px;
+  font-size: 14px;
+}
+
+.badge-listed {
+  display: inline-block;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  margin-top: 10px;
+}
+
+.badge-auction {
+  display: inline-block;
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  margin-top: 10px;
+}

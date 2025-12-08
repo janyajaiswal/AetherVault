@@ -82,7 +82,7 @@ const BulkMint = ({ onClose }) => {
   }
 
   // Mint a single NFT
-  const mintSingleNFT = async (nft, contract, listingPrice) => {
+  const mintSingleNFT = async (nft, contract) => {
     try {
       // Upload image
       if (!nft.imageFile) {
@@ -112,9 +112,7 @@ const BulkMint = ({ onClose }) => {
 
       // Mint on blockchain
       const priceInWei = ethers.parseEther(nft.price.toString())
-      const transaction = await contract.createToken(metadataURL, priceInWei, {
-        value: listingPrice
-      })
+      const transaction = await contract.createToken(metadataURL, priceInWei)
       await transaction.wait()
 
       return { success: true }
@@ -156,20 +154,12 @@ const BulkMint = ({ onClose }) => {
       )
 
       // Get listing price with error handling
-      let listingPrice
-      try {
-        listingPrice = await contract.getListPrice()
-      } catch (error) {
-        console.error('Error getting listing price:', error)
-        throw new Error('Could not get listing price from contract. Ensure contract is deployed correctly.')
-      }
-
       // Mint each NFT
       const results = []
       for (let i = 0; i < nfts.length; i++) {
         try {
           setStatus(`Minting NFT ${i + 1} of ${nfts.length}: ${nfts[i].name}...`)
-          await mintSingleNFT(nfts[i], contract, listingPrice)
+          await mintSingleNFT(nfts[i], contract)
           
           setNfts(prevNfts =>
             prevNfts.map((nft, idx) =>

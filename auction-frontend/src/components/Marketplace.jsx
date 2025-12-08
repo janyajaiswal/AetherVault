@@ -78,6 +78,7 @@ export const Marketplace = () => {
   const [buyMessage, updateMessage] = useState("");
   const [showPopup, setShowPopup] = useState(false);
   const [popupMessage, setPopupMessage] = useState('');
+  const [unlistStatus, setUnlistStatus] = useState('');
   const confettiInstance = useRef(null);
 
   useEffect(() => {
@@ -232,6 +233,38 @@ export const Marketplace = () => {
     }
   }
 
+  const unlistNFT = async (tokenId) => {
+    try {
+      setUnlistStatus(`⏳ Unlisting NFT...`);
+      
+      const provider = new ethers.BrowserProvider(window.ethereum);
+      const signer = await provider.getSigner();
+      const contract = new ethers.Contract(
+        NFTAuction.networks[5777].address,
+        NFTAuction.abi,
+        signer
+      );
+
+      // Call setTokenListed with false to unlist
+      const tx = await contract.setTokenListed(tokenId, false);
+      await tx.wait();
+      
+      setUnlistStatus("✅ NFT unlisted successfully! It's now in your collection.");
+      setTimeout(() => setUnlistStatus(''), 3000);
+      
+      // Remove from local state immediately
+      setData(prevData => prevData.filter(item => item.tokenId !== tokenId.toString()));
+      
+      // Refresh marketplace to ensure consistency
+      fetchAllNFTs();
+      
+    } catch (error) {
+      console.error('Error unlisting NFT:', error);
+      setUnlistStatus(`❌ Error: ${error.message}`);
+      setTimeout(() => setUnlistStatus(''), 3000);
+    }
+  }
+
   return (
     <div style={{ position: 'relative', zIndex: 1, minHeight: '100vh' }}>
       <h2 style={{ 
@@ -296,6 +329,7 @@ export const Marketplace = () => {
             </div>
           ) : (
             <div className="nft-list">
+              {unlistStatus && <div className="status-message">{unlistStatus}</div>}
               {data.map((item) => (
                 <div className="nft-card-m" key={item.tokenId}>
                   <img src={item.image} alt={item.name} />
@@ -313,7 +347,7 @@ export const Marketplace = () => {
                     <strong>Price:</strong> {item.price} ETH
                   </p>
                   {currAddress.toLowerCase() === item.seller.toLowerCase() ? (
-                    <p>You are the seller</p>
+                    <button className="btn-unlist" onClick={() => unlistNFT(item.tokenId)}>Remove from Marketplace</button>
                   ) : (
                     <button className="btn" onClick={() => buyNFT(item.tokenId, item.price)}>Buy Now</button>
                   )}

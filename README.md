@@ -77,7 +77,7 @@ It enables users to:
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/example/AetherVault.git
+git clone https://github.com/janyajaiswal/AetherVault
 cd AetherVault
 ```
 

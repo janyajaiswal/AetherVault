@@ -184,6 +184,7 @@ import React, { useState, useEffect } from 'react';
 import { ethers } from 'ethers';
 import axios from 'axios';
 import NFTAuction from '../abis/NFTAuction.json';
+import Auction from '../abis/Auction.json';
 import { getProvider } from '../services/blockchainService';
 import './styles/Profile.css';
 
@@ -233,27 +234,40 @@ export default function Profile() {
       const address = await signer.getAddress();
       setAddr(address);
 
-      // 2) instantiate your contract (using provider or signer; read‑only OK)
-      const contract = new ethers.Contract(
+      // 2) instantiate your contracts
+      const nftContract = new ethers.Contract(
         NFTAuction.networks[5777].address,
         NFTAuction.abi,
         signer
       );
 
-      // 3) fetch user's NFTs - pass false to get ALL NFTs (both listed and unlisted)
-      const raw = await contract.getMyNFTs(true);
+      const auctionContract = new ethers.Contract(
+        Auction.networks[5777].address,
+        Auction.abi,
+        signer
+      );
 
-      // 4) hydrate them
+      // 3) fetch user's NFTs - including both owned and listed
+      const raw = await nftContract.getMyNFTsForProfile();
+
+      // 4) fetch active auctions to see which NFTs are being auctioned
+      const activeAuctions = await auctionContract.getActiveAuctions();
+      const auctionTokenIds = new Set(activeAuctions.map(a => a.tokenId.toString()));
+
+      // 5) hydrate NFT data
       let sum = 0;
       const items = await Promise.all(
         raw.map(async (i) => {
-          const uri  = GetIpfsUrlFromPinata(await contract.tokenURI(i.tokenId));
+          const uri  = GetIpfsUrlFromPinata(await nftContract.tokenURI(i.tokenId));
           const { data: meta } = await axios.get(uri);
           const price = ethers.formatEther(i.price);
           sum += Number(price);
           
-          // Check if the token is listed
-          const isListed = await contract.isTokenListed(i.tokenId);
+          // Check if the token is listed on marketplace
+          const isListed = await nftContract.isTokenListed(i.tokenId);
+          
+          // Check if the token is in an active auction
+          const inAuction = auctionTokenIds.has(i.tokenId.toString());
           
           return {
             price,
@@ -263,7 +277,8 @@ export default function Profile() {
             image: meta.image,
             name: meta.name,
             description: meta.description,
-            isListed: isListed // Store listing status per NFT
+            isListed: isListed,
+            inAuction: inAuction
           };
         })
       );

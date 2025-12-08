@@ -403,8 +403,8 @@ contract Auction is ReentrancyGuard {
             // Update owner in the NFT contract
             nftContract.updateOwner(tokenId, msg.sender);
             
-            // Keep it listed so it shows in "My Deeds"
-            nftContract.setTokenListed(tokenId, true);
+            // Reclaimed NFTs should be unlisted, not listed
+            nftContract.setTokenListed(tokenId, false);
             
         } catch {
             // Revert state changes if transfer fails

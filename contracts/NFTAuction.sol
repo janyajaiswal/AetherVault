@@ -102,7 +102,7 @@ contract NFTAuction is ERC721URIStorage {
         return tokens;
     }
 
-    //Returns all the NFTs that the current user is owner or seller in
+    //Returns all the NFTs that the current user is owner of
     function getMyNFTs(bool profile) public view returns (ListedToken[] memory) {
         uint totalItemCount = _tokenIds.current();
         uint itemCount = 0;
@@ -111,10 +111,9 @@ contract NFTAuction is ERC721URIStorage {
         //Important to get a count of all the NFTs that belong to the user before we can make an array for them
         for(uint i=0; i < totalItemCount; i++)
         {
-            // Show NFTs where user is owner OR seller
-            // This includes listed NFTs (where owner is contract but seller is user)
-            // and unlisted NFTs (where owner is user)
-            if(idToListedToken[i+1].owner == msg.sender || idToListedToken[i+1].seller == msg.sender){
+            // Only show NFTs where user is the current owner (not just seller)
+            // This excludes NFTs in auctions and on marketplace (which are owned by contract)
+            if(idToListedToken[i+1].owner == msg.sender){
                 itemCount += 1;
             }
         }
@@ -122,12 +121,68 @@ contract NFTAuction is ERC721URIStorage {
         //Once you have the count of relevant NFTs, create an array then store all the NFTs in it
         ListedToken[] memory items = new ListedToken[](itemCount);
         for(uint i=0; i < totalItemCount; i++) {
-            if(idToListedToken[i+1].owner == msg.sender || idToListedToken[i+1].seller == msg.sender) {
+            if(idToListedToken[i+1].owner == msg.sender) {
                 currentId = i+1;
                 ListedToken storage currentItem = idToListedToken[currentId];
                 if(!profile && currentItem.currentlyListed == false) {
                     continue;
                 }
+                items[currentIndex] = currentItem;
+                currentIndex += 1;
+            }
+        }
+        return items;
+    }
+
+    //Returns all NFTs where user is the seller (for auctions)
+    function getMyNFTsForAuction() public view returns (ListedToken[] memory) {
+        uint totalItemCount = _tokenIds.current();
+        uint itemCount = 0;
+        uint currentIndex = 0;
+        uint currentId;
+        
+        // Count NFTs where user is seller (including those not yet listed)
+        for(uint i=0; i < totalItemCount; i++)
+        {
+            if(idToListedToken[i+1].seller == msg.sender){
+                itemCount += 1;
+            }
+        }
+
+        // Create array and populate with user's NFTs
+        ListedToken[] memory items = new ListedToken[](itemCount);
+        for(uint i=0; i < totalItemCount; i++) {
+            if(idToListedToken[i+1].seller == msg.sender) {
+                currentId = i+1;
+                ListedToken storage currentItem = idToListedToken[currentId];
+                items[currentIndex] = currentItem;
+                currentIndex += 1;
+            }
+        }
+        return items;
+    }
+
+    // Get all NFTs for the user (both owned and listed) for profile display
+    function getMyNFTsForProfile() public view returns (ListedToken[] memory) {
+        uint totalItemCount = _tokenIds.current();
+        uint itemCount = 0;
+        uint currentIndex = 0;
+        uint currentId;
+        
+        // Count NFTs where user is seller (includes owned and listed)
+        for(uint i=0; i < totalItemCount; i++)
+        {
+            if(idToListedToken[i+1].seller == msg.sender){
+                itemCount += 1;
+            }
+        }
+
+        // Create array and populate with user's NFTs
+        ListedToken[] memory items = new ListedToken[](itemCount);
+        for(uint i=0; i < totalItemCount; i++) {
+            if(idToListedToken[i+1].seller == msg.sender) {
+                currentId = i+1;
+                ListedToken storage currentItem = idToListedToken[currentId];
                 items[currentIndex] = currentItem;
                 currentIndex += 1;
             }
@@ -190,20 +245,23 @@ contract NFTAuction is ERC721URIStorage {
 
     // set the token as listed or not listed
     function setTokenListed(uint256 tokenId, bool listed) public {
-        require(idToListedToken[tokenId].seller == msg.sender, "Only seller can unlist");
-        
         if(!listed) {
-            // Unlisting: transfer NFT back to owner
-            require(idToListedToken[tokenId].currentlyListed, "Token is not listed");
-            
-            // Transfer the NFT from contract back to the seller
-            _transfer(address(this), msg.sender, tokenId);
-            
-            // Update the listing status and owner
+            // Unlisting: only proceed if token is currently listed
+            if(idToListedToken[tokenId].currentlyListed) {
+                // Get the seller address to transfer back to
+                address seller = address(idToListedToken[tokenId].seller);
+                
+                // Transfer the NFT from contract back to the seller
+                _transfer(address(this), seller, tokenId);
+                
+                // Update the listing status and owner
+                idToListedToken[tokenId].currentlyListed = false;
+                idToListedToken[tokenId].owner = payable(seller);
+            }
+            // If already unlisted, just update the flag
             idToListedToken[tokenId].currentlyListed = false;
-            idToListedToken[tokenId].owner = payable(msg.sender);
         } else {
-            // Listing: transfer NFT to contract (this would be done in listNFTAgain instead)
+            // Re-listing: just update the flag
             idToListedToken[tokenId].currentlyListed = listed;
         }
     }

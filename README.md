@@ -189,11 +189,3 @@ Handles bid placement, auction creation, winner selection, and NFT transfer.
 ERC721 NFT contract enabling NFT minting and auction participation.
 
 ---
-
-## 📄 License
-
-This project is open-source and available for educational and commercial use under the MIT License.
-
-```
-
-```

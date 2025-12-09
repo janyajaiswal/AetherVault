@@ -169,10 +169,10 @@ contract NFTAuction is ERC721URIStorage {
         uint currentIndex = 0;
         uint currentId;
         
-        // Count NFTs where user is seller (includes owned and listed)
+        // Count NFTs where user is the owner (includes NFTs they minted, bought, or won in auction)
         for(uint i=0; i < totalItemCount; i++)
         {
-            if(idToListedToken[i+1].seller == msg.sender){
+            if(idToListedToken[i+1].owner == msg.sender){
                 itemCount += 1;
             }
         }
@@ -180,7 +180,7 @@ contract NFTAuction is ERC721URIStorage {
         // Create array and populate with user's NFTs
         ListedToken[] memory items = new ListedToken[](itemCount);
         for(uint i=0; i < totalItemCount; i++) {
-            if(idToListedToken[i+1].seller == msg.sender) {
+            if(idToListedToken[i+1].owner == msg.sender) {
                 currentId = i+1;
                 ListedToken storage currentItem = idToListedToken[currentId];
                 items[currentIndex] = currentItem;

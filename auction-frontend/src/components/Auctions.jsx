@@ -655,6 +655,9 @@ const Auctions = () => {
       await fetchActiveAuctions(auctionContract, nftContract);
       await fetchCompletedAuctions(auctionContract, nftContract);
       await fetchDeeds(nftContract);
+      
+      // Dispatch custom event to refresh Profile component
+      window.dispatchEvent(new Event('nftClaimed'));
     } catch (error) {
       console.error("Error claiming prize:", error);
       setError(`Failed to claim prize: ${error.reason || error.message}`);

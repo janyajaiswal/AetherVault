@@ -222,7 +222,16 @@ export default function Profile() {
     // Also set up an interval to refresh every 5 seconds for real-time updates
     const interval = setInterval(getNFTData, 5000);
     
-    return () => clearInterval(interval);
+    // Listen for nftClaimed event to refresh immediately
+    const handleNFTClaimed = () => {
+      getNFTData();
+    };
+    window.addEventListener('nftClaimed', handleNFTClaimed);
+    
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener('nftClaimed', handleNFTClaimed);
+    };
   }, []);
 
   async function getNFTData() {
